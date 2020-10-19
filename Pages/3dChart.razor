@@ -1,0 +1,58 @@
+﻿@page "/3d"
+@inject IJSRuntime JsRunTime
+@using lcjs_blazor_template.Data
+
+<h1>3D Chart (XY)</h1>
+<!--Container div that holds the rendered chart-->
+<div id="chart-element"></div>
+
+@code {
+
+    /// <summary>
+    /// Overide for OnAfterRender hook.
+    /// This overide is used to provide a way to identify if the app is pre-rendering or not, and accordingly
+    /// initialize the chart.
+    /// </summary>
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Show3DChart();
+        }
+    }
+
+    /// <summary>
+    /// Handles JS interop call to render the chart.
+    /// </summary>
+    async void Show3DChart()
+    {
+        // JS Interop call to the wrapper over LCJS.
+        await JsRunTime.InvokeVoidAsync("LCJSBlazor.Create3DChart", GeneratePointSeries(3, 50));
+        StateHasChanged();
+    }
+
+    /// <summary>
+    /// Generates a random collection of point series of points.
+    /// </summary>
+    /// <param name="seriesCount">The number of point series to be generated.</param>
+    /// <param name="pointsPerSeries">The number of points to be genereated per point series.</param>
+    /// <returns>A collection of point series.</returns>
+    private List<Point3D[]> GeneratePointSeries(int seriesCount, int pointsPerSeries)
+    {
+        List<Point3D[]> pointSeries = new List<Point3D[]>();
+
+        for (int i = 0; i < seriesCount; i++)
+        {
+            Point3D[] points = new Point3D[pointsPerSeries];
+
+            for (int j = 0; j < pointsPerSeries; j++)
+            {
+                points[j] = new Point3D(j, new Random().Next(0, 100), new Random().Next(0, 100));
+            }
+
+            pointSeries.Add(points);
+        }
+
+        return pointSeries;
+    }
+}

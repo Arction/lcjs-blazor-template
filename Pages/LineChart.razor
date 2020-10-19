@@ -1,0 +1,59 @@
+@inject IJSRuntime JsRunTime
+@using System.Drawing;
+@using System.Collections.Generic;
+@page "/xy"
+
+<h1>Line Chart (XY)</h1>
+<!--Container div that holds the rendered chart-->
+<div id="chart-element"></div>
+
+@code {
+
+    /// <summary>
+    /// This overide is used to provide a way to identify if the app is pre-rendering or not, and accordingly 
+    /// initialize the chart.
+    /// </summary>
+    /// <returns></returns>
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            ShowLineChart();
+        }
+    }
+
+    /// <summary>
+    /// Handles JS interop call to render the chart.
+    /// </summary>
+    async void ShowLineChart()
+    {
+        // JS Interop call to the wrapper over LCJS.
+        await JsRunTime.InvokeVoidAsync("LCJSBlazor.CreateXYChart", GenerateLineSeries(3, 50));
+        StateHasChanged();
+    }
+
+    /// <summary>
+    /// Generates a random collection of line series of points.
+    /// </summary>
+    /// <param name="seriesCount">The number of line series to be generated.</param>
+    /// <param name="pointsPerSeries">The number of points to be genereated per line series.</param>
+    /// <returns>A collection of line series.</returns>
+    private List<Point[]> GenerateLineSeries(int seriesCount, int pointsPerSeries)
+    {
+        List<Point[]> lineSeries = new List<Point[]>();
+
+        for(int i = 0; i < seriesCount; i++)
+        {
+            Point[] pointSeries = new Point[pointsPerSeries];
+
+            for (int j = 0; j < pointsPerSeries; j++)
+            {
+                pointSeries[j] = new Point(j, new Random().Next(0, 100));
+            }
+
+            lineSeries.Add(pointSeries);
+        }
+
+        return lineSeries;
+    }
+}
