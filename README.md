@@ -6,6 +6,8 @@ More information about LightningChart<sup>&#174;</sup> JS can be found from our 
 ## Getting Started
 This project can be opened with any code editor like [Visual Studio Code][1] or also traditionally through [Visual Studio][2] using the supplied solution file. Additionally, in order to properly build this solution, you will require the latest version of the .NET Core SDK. For further details and download links, please refer to the *Get Started* guide for Blazor [here][3]!
 
+To build and run this project, either "Run" the solution using Visual Studio, or execute the command `dotnet run` in the root of the folder.
+
 ## LightningChart JS and C#
 Due to the unique way in which a Blazor application uses C# code on  WebAssembly to program the UI, using LightningChart<sup>&#174; </sup> JS here is slightly different than a traditional web application that is scripted on JavaScript. Here, we make use of the [JS Interop][5] features baked into Blazor to issue calls to the LightningChart<sup>&#174; </sup> JS plugin. It is, then, much more feasible to write a custom "wrapper" that can act as an interface between LightningChart<sup>&#174; </sup> JS and your C# code.
 
